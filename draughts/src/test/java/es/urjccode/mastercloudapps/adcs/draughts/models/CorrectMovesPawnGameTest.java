@@ -33,7 +33,7 @@ public class CorrectMovesPawnGameTest extends GameTest {
             "        ",
             "        ");
         this.assertMove(
-            new Coordinate(5, 0), 
+            new Coordinate(5, 0),
             new Coordinate(4, 1)
         );
     }
@@ -59,7 +59,7 @@ public class CorrectMovesPawnGameTest extends GameTest {
             "        ",
             "        ");
         this.assertMove(
-            new Coordinate(2, 3), 
+            new Coordinate(2, 3),
             new Coordinate(3, 4));
     }
 
@@ -107,7 +107,7 @@ public class CorrectMovesPawnGameTest extends GameTest {
             "        ",
             "        ");
         this.assertMove(
-            new Coordinate(3, 0), 
+            new Coordinate(3, 0),
             new Coordinate(5, 2));
     }
 
@@ -132,7 +132,7 @@ public class CorrectMovesPawnGameTest extends GameTest {
             "        ",
             "        ");
         this.assertMove(
-            new Coordinate(5, 0), 
+            new Coordinate(5, 0),
             new Coordinate(3, 2),
             new Coordinate(1, 4));
     }
@@ -158,7 +158,7 @@ public class CorrectMovesPawnGameTest extends GameTest {
             "     n  ",
             "        ");
         this.assertMove(
-            new Coordinate(2, 1), 
+            new Coordinate(2, 1),
             new Coordinate(4, 3),
             new Coordinate(6, 5));
     }
@@ -184,7 +184,7 @@ public class CorrectMovesPawnGameTest extends GameTest {
             "        ",
             "        ");
         this.assertMove(
-            new Coordinate(1,0), 
+            new Coordinate(1,0),
             new Coordinate(0,1));
     }
 
@@ -209,8 +209,157 @@ public class CorrectMovesPawnGameTest extends GameTest {
             "        ",
             "  N     ");
         this.assertMove(
-                new Coordinate(6,3), 
-                new Coordinate(7,2));
+            new Coordinate(6,3),
+            new Coordinate(7,2));
     }
 
+    @Test
+    public void testGivenGameWhenMoveWithWhiteWithoutEatingThenPunish(){
+        this.setGame(Color.WHITE,
+            "        ",
+            "        ",
+            " n      ",
+            "  b   n ",
+            "        ",
+            "    b   ",
+            "        ",
+            "        ");
+        this.setExpectedGame(Color.BLACK,
+            "        ",
+            "        ",
+            " n      ",
+            "      n ",
+            "     b  ",
+            "        ",
+            "        ",
+            "        ");
+        this.assertMove(
+            new Coordinate(5,4),
+            new Coordinate(4,5));
+    }
+
+    @Test
+    public void testGivenGameWhenMoveWithLastPieceWhiteWithoutEatingThenPunish(){
+        this.setGame(Color.WHITE,
+            "        ",
+            "        ",
+            "        ",
+            "        ",
+            "   n    ",
+            "    b   ",
+            "        ",
+            "        ");
+        this.setExpectedGame(Color.BLACK,
+            "        ",
+            "        ",
+            "        ",
+            "        ",
+            "   n    ",
+            "        ",
+            "        ",
+            "        ");
+        this.assertMove(
+            new Coordinate(5,4),
+            new Coordinate(4,5));
+    }
+
+    @Test
+    public void testGivenGameWhenMoveWithBlackWithoutEatingThenPunish(){
+        this.setGame(Color.BLACK,
+            "        ",
+            "        ",
+            " n      ",
+            "        ",
+            "   b n  ",
+            "      b ",
+            "        ",
+            "        ");
+        this.setExpectedGame(Color.WHITE,
+            "        ",
+            "        ",
+            "        ",
+            "  n     ",
+            "   b    ",
+            "      b ",
+            "        ",
+            "        ");
+        this.assertMove(
+            new Coordinate(2,1),
+            new Coordinate(3,2));
+    }
+
+    @Test
+    public void testGivenGameWhenMoveWithLastPieceBlackWithoutEatingThenPunish(){
+        this.setGame(Color.BLACK,
+            "        ",
+            "        ",
+            "        ",
+            "        ",
+            "   n    ",
+            "    b   ",
+            "        ",
+            "        ");
+        this.setExpectedGame(Color.WHITE,
+            "        ",
+            "        ",
+            "        ",
+            "        ",
+            "        ",
+            "    b   ",
+            "        ",
+            "        ");
+        this.assertMove(
+            new Coordinate(4,3),
+            new Coordinate(5,2));
+    }
+
+    @Test
+    public void testGivenGameWhenMoveWithWhiteWithoutEatingThenPunishRemoveDraught(){
+        this.setGame(Color.WHITE,
+            "        ",
+            "        ",
+            " n      ",
+            "        ",
+            "   B    ",
+            "    b   ",
+            "        ",
+            "        ");
+        this.setExpectedGame(Color.BLACK,
+            "        ",
+            "        ",
+            " n      ",
+            "        ",
+            "     b  ",
+            "        ",
+            "        ",
+            "        ");
+        this.assertMove(
+            new Coordinate(5,4),
+            new Coordinate(4,5));
+    }
+
+    @Test
+    public void testGivenGameWhenMoveWithBlackWithoutEatingThenPunishRemoveDraught(){
+        this.setGame(Color.BLACK,
+            "        ",
+            "        ",
+            " N    n ",
+            "  b     ",
+            "        ",
+            "        ",
+            "        ",
+            "        ");
+        this.setExpectedGame(Color.WHITE,
+            "        ",
+            "        ",
+            "        ",
+            "  b  n  ",
+            "        ",
+            "        ",
+            "        ",
+            "        ");
+        this.assertMove(
+            new Coordinate(2,6),
+            new Coordinate(3,5));
+    }
 }
