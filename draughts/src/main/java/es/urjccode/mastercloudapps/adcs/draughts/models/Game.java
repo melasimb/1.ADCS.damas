@@ -70,15 +70,14 @@ public class Game {
     }
 
     private boolean knowCoordinateCanEat(Coordinate coordinate, int level, List<Coordinate> removedCoordinates) {
-        boolean canEat = false;
         for (Coordinate diagonalCoordinate :  coordinate.getDiagonalCoordinates(level) ) {
             Error error = this.isCorrectPairMove(0, coordinate, diagonalCoordinate);
             if (error == null && this.board.getAmountBetweenDiagonalPieces(coordinate, diagonalCoordinate) == 1) {
-                canEat = true;
                 removedCoordinates.add(coordinate);
+                return true;
             }
         }
-        return canEat;
+        return false;
     }
 
 	private Error isCorrectPairMove(int pair, Coordinate... coordinates) {
