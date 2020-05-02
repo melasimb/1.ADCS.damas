@@ -55,18 +55,13 @@ public class Game {
     private Coordinate getRandomCoordinateCanEat() {
         List<Coordinate> removedCoordinates = new ArrayList<Coordinate>();
         for (Coordinate coordinate : this.getCoordinatesWithActualColor()) {
-            Piece piece = this.getPiece(coordinate);
-            if (piece instanceof Pawn) {
-                this.knowCoordinateCanEat(coordinate, 2, removedCoordinates);
-            }
-            if (piece instanceof Draught) {
-                int level = 2;
-                boolean remove = false;
-                do {
-                    remove = this.knowCoordinateCanEat(coordinate, level, removedCoordinates);
-                    level++;
-                } while (level <= 7 && !remove);
-            }
+            int level = 2;
+            boolean remove = false;
+            int levelMax = this.getPiece(coordinate).isDraught()? 7 : 2;
+            do {
+                remove = this.knowCoordinateCanEat(coordinate, level, removedCoordinates);
+                level++;
+            } while (level <= levelMax && !remove);
         }
         if (removedCoordinates.size() > 0) {
             Random random = new Random();
@@ -79,12 +74,9 @@ public class Game {
         boolean canEat = false;
         for (Coordinate diagonalCoordinate :  coordinate.getDiagonalCoordinates(level) ) {
             Error error = this.isCorrectPairMove(0, coordinate, diagonalCoordinate);
-            if (error == null) {
-                int betweenDiagonalPieces = this.board.getAmountBetweenDiagonalPieces(coordinate, diagonalCoordinate);
-                if (betweenDiagonalPieces == 1) {
-                    canEat = true;
-                    removedCoordinates.add(coordinate);
-                }
+            if (error == null && this.board.getAmountBetweenDiagonalPieces(coordinate, diagonalCoordinate) == 1) {
+                canEat = true;
+                removedCoordinates.add(coordinate);
             }
         }
         return canEat;
