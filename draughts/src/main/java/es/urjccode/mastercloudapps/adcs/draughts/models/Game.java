@@ -57,10 +57,15 @@ public class Game {
         for (Coordinate coordinate : this.getCoordinatesWithActualColor()) {
             Piece piece = this.getPiece(coordinate);
             if (piece instanceof Pawn) {
-                this.getRandomCoordinateCanEatPawn(coordinate, removedCoordinates);
+                this.knowCoordinateCanEat(coordinate, 2, removedCoordinates);
             }
             if (piece instanceof Draught) {
-                this.getRandomCoordinateCanEatDraught(coordinate, removedCoordinates);
+                int level = 2;
+                boolean remove = false;
+                do {
+                    remove = this.knowCoordinateCanEat(coordinate, level, removedCoordinates);
+                    level++;
+                } while (level <= 7 && !remove);
             }
         }
         if (removedCoordinates.size() > 0) {
@@ -70,18 +75,19 @@ public class Game {
         return null;
     }
 
-    private void getRandomCoordinateCanEatPawn(Coordinate coordinate, List<Coordinate> removedCoordinates) {
-        List<Coordinate> diagonalCoordinates = coordinate.getDiagonalCoordinates(2);
-        int pair = 0;
-        for (Coordinate diagonalCoordinate : diagonalCoordinates ) {
-            Error error = this.isCorrectPairMove(pair, coordinate, diagonalCoordinate);
+    private boolean knowCoordinateCanEat(Coordinate coordinate, int level, List<Coordinate> removedCoordinates) {
+        boolean canEat = false;
+        for (Coordinate diagonalCoordinate :  coordinate.getDiagonalCoordinates(level) ) {
+            Error error = this.isCorrectPairMove(0, coordinate, diagonalCoordinate);
             if (error == null) {
-                List<Piece> betweenDiagonalPieces = this.board.getBetweenDiagonalPieces(coordinate, diagonalCoordinate);
-                if (betweenDiagonalPieces.size() > 0) {
+                int betweenDiagonalPieces = this.board.getAmountBetweenDiagonalPieces(coordinate, diagonalCoordinate);
+                if (betweenDiagonalPieces == 1) {
+                    canEat = true;
                     removedCoordinates.add(coordinate);
                 }
             }
         }
+        return canEat;
     }
 
     private void getRandomCoordinateCanEatDraught(Coordinate coordinate, List<Coordinate> removedCoordinates) {
