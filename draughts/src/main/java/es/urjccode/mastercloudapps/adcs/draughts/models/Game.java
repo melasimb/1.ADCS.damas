@@ -111,13 +111,16 @@ public class Game {
 			this.board.put(coordinates[pair + 1], new Draught(color));
 		}
 		if (randomCoordinateCanEat != null) {
-		    if (randomCoordinateCanEat.getRow() == coordinates[pair].getRow() && randomCoordinateCanEat.getColumn() == coordinates[pair].getColumn()) {
-                randomCoordinateCanEat = coordinates[pair+1];
-            }
-		    this.board.remove(randomCoordinateCanEat);
-		    removedCoordinates.add(randomCoordinateCanEat);
+		    this.deleteRandomCoordinateCanEat(pair, randomCoordinateCanEat, coordinates);
         }
 	}
+
+    private void deleteRandomCoordinateCanEat(int pair, Coordinate randomCoordinateCanEat, Coordinate... coordinates) {
+        if (randomCoordinateCanEat.getRow() == coordinates[pair].getRow() && randomCoordinateCanEat.getColumn() == coordinates[pair].getColumn()) {
+            randomCoordinateCanEat = coordinates[pair+1];
+        }
+        this.board.remove(randomCoordinateCanEat);
+    }
 
 	private Coordinate getBetweenDiagonalPiece(int pair, Coordinate... coordinates) {
 		assert coordinates[pair].isOnDiagonal(coordinates[pair + 1]);
