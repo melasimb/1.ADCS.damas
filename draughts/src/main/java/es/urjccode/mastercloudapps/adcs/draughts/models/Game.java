@@ -57,7 +57,7 @@ public class Game {
         for (Coordinate coordinate : this.getCoordinatesWithActualColor()) {
             int level = 2;
             boolean remove = false;
-            int levelMax = this.getPiece(coordinate).isDraught()? 7 : 2;
+            int levelMax = this.getPiece(coordinate).getMaxDistance();
             do {
                 remove = this.knowCoordinateCanEat(coordinate, level, removedCoordinates);
                 level++;

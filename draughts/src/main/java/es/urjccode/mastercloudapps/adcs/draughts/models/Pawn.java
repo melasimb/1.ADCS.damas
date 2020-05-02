@@ -22,8 +22,8 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean isDraught() {
-        return false;
+    public int getMaxDistance() {
+        return Pawn.MAX_DISTANCE;
     }
 
     protected char[] getCodes() {

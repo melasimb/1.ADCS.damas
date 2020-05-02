@@ -74,5 +74,5 @@ public abstract class Piece {
 		return true;
 	}
 
-    public abstract boolean isDraught();
+    public abstract int getMaxDistance();
 }
