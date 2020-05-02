@@ -57,36 +57,10 @@ public class Game {
         for (Coordinate coordinate : this.getCoordinatesWithActualColor()) {
             Piece piece = this.getPiece(coordinate);
             if (piece instanceof Pawn) {
-                List<Coordinate> diagonalCoordinates = coordinate.getDiagonalCoordinates(2);
-                int pair = 0;
-                for (Coordinate diagonalCoordinate : diagonalCoordinates ) {
-                    Error error = this.isCorrectPairMove(pair, coordinate, diagonalCoordinate);
-                    if (error == null) {
-                        List<Piece> betweenDiagonalPieces = this.board.getBetweenDiagonalPieces(coordinate, diagonalCoordinate);
-                        if (betweenDiagonalPieces.size() > 0) {
-                            removedCoordinates.add(coordinate);
-                        }
-                    }
-                }
+                this.getRandomCoordinateCanEatPawn(coordinate, removedCoordinates);
             }
             if (piece instanceof Draught) {
-                int level = 2;
-                boolean remove = false;
-                do {
-                    List<Coordinate> diagonalCoordinates = coordinate.getDiagonalCoordinates(level);
-                    int pair = 0;
-                    for (Coordinate diagonalCoordinate : diagonalCoordinates ) {
-                        Error error = this.isCorrectPairMove(pair, coordinate, diagonalCoordinate);
-                        if (error == null) {
-                            List<Piece> betweenDiagonalPieces = this.board.getBetweenDiagonalPieces(coordinate, diagonalCoordinate);
-                            if (betweenDiagonalPieces.size() == 1) {
-                                removedCoordinates.add(coordinate);
-                                remove = true;
-                            }
-                        }
-                    }
-                    level++;
-                } while (level <= 7 && !remove);
+                this.getRandomCoordinateCanEatDraught(coordinate, removedCoordinates);
             }
         }
         if (removedCoordinates.size() > 0) {
@@ -94,6 +68,40 @@ public class Game {
             return removedCoordinates.get(random.nextInt(removedCoordinates.size()));
         }
         return null;
+    }
+
+    private void getRandomCoordinateCanEatPawn(Coordinate coordinate, List<Coordinate> removedCoordinates) {
+        List<Coordinate> diagonalCoordinates = coordinate.getDiagonalCoordinates(2);
+        int pair = 0;
+        for (Coordinate diagonalCoordinate : diagonalCoordinates ) {
+            Error error = this.isCorrectPairMove(pair, coordinate, diagonalCoordinate);
+            if (error == null) {
+                List<Piece> betweenDiagonalPieces = this.board.getBetweenDiagonalPieces(coordinate, diagonalCoordinate);
+                if (betweenDiagonalPieces.size() > 0) {
+                    removedCoordinates.add(coordinate);
+                }
+            }
+        }
+    }
+
+    private void getRandomCoordinateCanEatDraught(Coordinate coordinate, List<Coordinate> removedCoordinates) {
+        int level = 2;
+        boolean remove = false;
+        do {
+            List<Coordinate> diagonalCoordinates = coordinate.getDiagonalCoordinates(level);
+            int pair = 0;
+            for (Coordinate diagonalCoordinate : diagonalCoordinates ) {
+                Error error = this.isCorrectPairMove(pair, coordinate, diagonalCoordinate);
+                if (error == null) {
+                    List<Piece> betweenDiagonalPieces = this.board.getBetweenDiagonalPieces(coordinate, diagonalCoordinate);
+                    if (betweenDiagonalPieces.size() == 1) {
+                        removedCoordinates.add(coordinate);
+                        remove = true;
+                    }
+                }
+            }
+            level++;
+        } while (level <= 7 && !remove);
     }
 
 	private Error isCorrectPairMove(int pair, Coordinate... coordinates) {
