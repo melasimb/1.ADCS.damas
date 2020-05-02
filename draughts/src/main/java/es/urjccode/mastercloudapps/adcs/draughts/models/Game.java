@@ -90,26 +90,6 @@ public class Game {
         return canEat;
     }
 
-    private void getRandomCoordinateCanEatDraught(Coordinate coordinate, List<Coordinate> removedCoordinates) {
-        int level = 2;
-        boolean remove = false;
-        do {
-            List<Coordinate> diagonalCoordinates = coordinate.getDiagonalCoordinates(level);
-            int pair = 0;
-            for (Coordinate diagonalCoordinate : diagonalCoordinates ) {
-                Error error = this.isCorrectPairMove(pair, coordinate, diagonalCoordinate);
-                if (error == null) {
-                    List<Piece> betweenDiagonalPieces = this.board.getBetweenDiagonalPieces(coordinate, diagonalCoordinate);
-                    if (betweenDiagonalPieces.size() == 1) {
-                        removedCoordinates.add(coordinate);
-                        remove = true;
-                    }
-                }
-            }
-            level++;
-        } while (level <= 7 && !remove);
-    }
-
 	private Error isCorrectPairMove(int pair, Coordinate... coordinates) {
 		assert coordinates[pair] != null;
 		assert coordinates[pair + 1] != null;
