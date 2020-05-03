@@ -74,4 +74,5 @@ public abstract class Piece {
 		return true;
 	}
 
+    public abstract int getMaxDistance();
 }

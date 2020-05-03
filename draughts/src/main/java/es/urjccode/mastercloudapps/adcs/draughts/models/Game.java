@@ -2,6 +2,7 @@ package es.urjccode.mastercloudapps.adcs.draughts.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Game {
 
@@ -51,6 +52,41 @@ public class Game {
 		return error;
 	}
 
+    private Coordinate getRandomCoordinateCanEat() {
+        List<Coordinate> removedCoordinates = new ArrayList<Coordinate>();
+        for (Coordinate coordinate : this.getCoordinatesWithActualColor()) {
+            int level = 2;
+            boolean remove;
+            do {
+                remove = this.knowCoordinateCanEat(coordinate, level, removedCoordinates);
+                level++;
+            } while (level <= this.getPiece(coordinate).getMaxDistance() && !remove);
+        }
+        if (removedCoordinates.size() > 0) {
+            Random random = new Random();
+            return removedCoordinates.get(random.nextInt(removedCoordinates.size()));
+        }
+        return null;
+    }
+
+    private boolean knowCoordinateCanEat(Coordinate coordinate, int level, List<Coordinate> removedCoordinates) {
+        for (Coordinate diagonalCoordinate :  coordinate.getDiagonalCoordinates(level) ) {
+            Error error = this.isCorrectPairMove(0, coordinate, diagonalCoordinate);
+            if (error == null && this.board.getAmountBetweenDiagonalPieces(coordinate, diagonalCoordinate) == 1) {
+                removedCoordinates.add(coordinate);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void deleteRandomCoordinateCanEat(int pair, Coordinate randomCoordinateCanEat, Coordinate... coordinates) {
+        if (randomCoordinateCanEat.getRow() == coordinates[pair].getRow() && randomCoordinateCanEat.getColumn() == coordinates[pair].getColumn()) {
+            randomCoordinateCanEat = coordinates[pair+1];
+        }
+        this.board.remove(randomCoordinateCanEat);
+    }
+
 	private Error isCorrectPairMove(int pair, Coordinate... coordinates) {
 		assert coordinates[pair] != null;
 		assert coordinates[pair + 1] != null;
@@ -60,23 +96,25 @@ public class Game {
 			return Error.OPPOSITE_PIECE;
 		if (!this.board.isEmpty(coordinates[pair + 1]))
 			return Error.NOT_EMPTY_TARGET;
-		List<Piece> betweenDiagonalPieces = 
+		List<Piece> betweenDiagonalPieces =
 			this.board.getBetweenDiagonalPieces(coordinates[pair], coordinates[pair + 1]);
 		return this.board.getPiece(coordinates[pair]).isCorrectMovement(betweenDiagonalPieces, pair, coordinates);
 	}
 
 	private void pairMove(List<Coordinate> removedCoordinates, int pair, Coordinate... coordinates) {
 		Coordinate forRemoving = this.getBetweenDiagonalPiece(pair, coordinates);
+		Coordinate randomCoordinateCanEat = null;
 		if (forRemoving != null) {
 			removedCoordinates.add(0, forRemoving);
 			this.board.remove(forRemoving);
-		}
+		} else {
+		    randomCoordinateCanEat = this.getRandomCoordinateCanEat();
+        }
 		this.board.move(coordinates[pair], coordinates[pair + 1]);
-		if (this.board.getPiece(coordinates[pair + 1]).isLimit(coordinates[pair + 1])) {
-			Color color = this.board.getColor(coordinates[pair + 1]);
-			this.board.remove(coordinates[pair + 1]);
-			this.board.put(coordinates[pair + 1], new Draught(color));
-		}
+		this.board.checkIfConvertDraught(coordinates[pair + 1]);
+		if (randomCoordinateCanEat != null) {
+		    this.deleteRandomCoordinateCanEat(pair, randomCoordinateCanEat, coordinates);
+        }
 	}
 
 	private Coordinate getBetweenDiagonalPiece(int pair, Coordinate... coordinates) {

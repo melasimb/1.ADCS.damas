@@ -51,15 +51,15 @@ public class PlayControllerTest {
         Game game = new GameBuilder().rows(
             "        ",
             "        ",
-            "   n    ",
-            "  b b   ",
-            "     b  ",
-            "b       ",
+            "n       ",
+            " b      ",
+            "        ",
+            "   b    ",
             "        ",
             "        ").build();
         playController = new PlayController(game, new State());
-        Coordinate origin = new Coordinate(5, 0);
-        Coordinate target = new Coordinate(4, 1);
+        Coordinate origin = new Coordinate(5, 3);
+        Coordinate target = new Coordinate(4, 2);
         playController.move(origin, target);
         assertEquals(playController.getColor(target), Color.WHITE);
         assertTrue(game.isBlocked());
