@@ -111,7 +111,6 @@ public class Game {
 		    randomCoordinateCanEat = this.getRandomCoordinateCanEat();
         }
 		this.board.move(coordinates[pair], coordinates[pair + 1]);
-		this.board.checkIfConvertDraught(coordinates[pair + 1]);
 		if (randomCoordinateCanEat != null) {
 		    this.deleteRandomCoordinateCanEat(pair, randomCoordinateCanEat, coordinates);
         }
