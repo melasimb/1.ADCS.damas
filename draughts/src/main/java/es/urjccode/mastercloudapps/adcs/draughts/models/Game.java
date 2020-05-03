@@ -80,6 +80,13 @@ public class Game {
         return false;
     }
 
+    private void deleteRandomCoordinateCanEat(int pair, Coordinate randomCoordinateCanEat, Coordinate... coordinates) {
+        if (randomCoordinateCanEat.getRow() == coordinates[pair].getRow() && randomCoordinateCanEat.getColumn() == coordinates[pair].getColumn()) {
+            randomCoordinateCanEat = coordinates[pair+1];
+        }
+        this.board.remove(randomCoordinateCanEat);
+    }
+
 	private Error isCorrectPairMove(int pair, Coordinate... coordinates) {
 		assert coordinates[pair] != null;
 		assert coordinates[pair + 1] != null;
@@ -104,22 +111,11 @@ public class Game {
 		    randomCoordinateCanEat = this.getRandomCoordinateCanEat();
         }
 		this.board.move(coordinates[pair], coordinates[pair + 1]);
-		if (this.board.getPiece(coordinates[pair + 1]).isLimit(coordinates[pair + 1])) {
-			Color color = this.board.getColor(coordinates[pair + 1]);
-			this.board.remove(coordinates[pair + 1]);
-			this.board.put(coordinates[pair + 1], new Draught(color));
-		}
+		this.board.checkIfConvertDraught(coordinates[pair + 1]);
 		if (randomCoordinateCanEat != null) {
 		    this.deleteRandomCoordinateCanEat(pair, randomCoordinateCanEat, coordinates);
         }
 	}
-
-    private void deleteRandomCoordinateCanEat(int pair, Coordinate randomCoordinateCanEat, Coordinate... coordinates) {
-        if (randomCoordinateCanEat.getRow() == coordinates[pair].getRow() && randomCoordinateCanEat.getColumn() == coordinates[pair].getColumn()) {
-            randomCoordinateCanEat = coordinates[pair+1];
-        }
-        this.board.remove(randomCoordinateCanEat);
-    }
 
 	private Coordinate getBetweenDiagonalPiece(int pair, Coordinate... coordinates) {
 		assert coordinates[pair].isOnDiagonal(coordinates[pair + 1]);
