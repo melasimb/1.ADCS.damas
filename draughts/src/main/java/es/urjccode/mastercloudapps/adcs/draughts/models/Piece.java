@@ -35,11 +35,6 @@ public class Piece {
         return null;
     }
 
-	boolean isLimit(Coordinate coordinate) {
-		return coordinate.isFirst() && this.getColor() == Color.WHITE
-				|| coordinate.isLast() && this.getColor() == Color.BLACK;
-	}
-
 	boolean isAdvanced(Coordinate origin, Coordinate target) {
 		assert origin != null;
 		assert target != null;
@@ -52,6 +47,10 @@ public class Piece {
 	public Color getColor() {
 		return this.color;
 	}
+
+    public int getMaxDistance() {
+        return Piece.MAX_DISTANCE;
+    }
 
 	@Override
 	public String toString() {
@@ -69,10 +68,6 @@ public class Piece {
 		result = prime * result + ((color == null) ? 0 : color.hashCode());
 		return result;
 	}
-
-    public int getMaxDistance() {
-        return Piece.MAX_DISTANCE;
-    }
 
 	@Override
 	public boolean equals(Object obj) {
