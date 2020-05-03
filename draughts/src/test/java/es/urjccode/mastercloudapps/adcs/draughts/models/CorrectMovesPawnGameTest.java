@@ -164,56 +164,6 @@ public class CorrectMovesPawnGameTest extends GameTest {
     }
 
     @Test
-    public void testGivenGameWhenWhitePawnAtLimitThenNewDraugts(){
-        this.setGame(Color.WHITE,
-            "        ",
-            "b       ",
-            "        ",
-            "        ",
-            "        ",
-            "        ",
-            "        ",
-            "        ");
-        this.setExpectedGame(Color.BLACK,
-            " B      ",
-            "        ",
-            "        ",
-            "        ",
-            "        ",
-            "        ",
-            "        ",
-            "        ");
-        this.assertMove(
-            new Coordinate(1,0),
-            new Coordinate(0,1));
-    }
-
-    @Test
-    public void testGivenGameWhenBlackPawnAtLimitThenNewDraugts(){
-        this.setGame(Color.BLACK,
-            "        ",
-            "        ",
-            "        ",
-            "b       ",
-            "        ",
-            "        ",
-            "   n    ",
-            "        ");
-        this.setExpectedGame(Color.WHITE,
-            "        ",
-            "        ",
-            "        ",
-            "b       ",
-            "        ",
-            "        ",
-            "        ",
-            "  N     ");
-        this.assertMove(
-            new Coordinate(6,3),
-            new Coordinate(7,2));
-    }
-
-    @Test
     public void testGivenGameWhenMoveWithWhiteWithoutEatingThenPunish(){
         this.setGame(Color.WHITE,
             "        ",
@@ -311,55 +261,5 @@ public class CorrectMovesPawnGameTest extends GameTest {
         this.assertMove(
             new Coordinate(4,3),
             new Coordinate(5,2));
-    }
-
-    @Test
-    public void testGivenGameWhenMoveWithWhiteWithoutEatingThenPunishRemoveDraught(){
-        this.setGame(Color.WHITE,
-            "        ",
-            "        ",
-            " n      ",
-            "        ",
-            "   B    ",
-            "    b   ",
-            "        ",
-            "        ");
-        this.setExpectedGame(Color.BLACK,
-            "        ",
-            "        ",
-            " n      ",
-            "        ",
-            "     b  ",
-            "        ",
-            "        ",
-            "        ");
-        this.assertMove(
-            new Coordinate(5,4),
-            new Coordinate(4,5));
-    }
-
-    @Test
-    public void testGivenGameWhenMoveWithBlackWithoutEatingThenPunishRemoveDraught(){
-        this.setGame(Color.BLACK,
-            "        ",
-            "        ",
-            " N    n ",
-            "  b     ",
-            "        ",
-            "        ",
-            "        ",
-            "        ");
-        this.setExpectedGame(Color.WHITE,
-            "        ",
-            "        ",
-            "        ",
-            "  b  n  ",
-            "        ",
-            "        ",
-            "        ",
-            "        ");
-        this.assertMove(
-            new Coordinate(2,6),
-            new Coordinate(3,5));
     }
 }

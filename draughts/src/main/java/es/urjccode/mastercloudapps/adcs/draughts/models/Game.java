@@ -26,7 +26,7 @@ public class Game {
 				Color color = Color.getInitialColor(coordinate);
 				Piece piece = null;
 				if (color != null)
-					piece = new Pawn(color);
+					piece = new Piece(color);
 				this.board.put(coordinate, piece);
 			}
 		if (this.turn.getColor() != Color.WHITE)
@@ -55,12 +55,7 @@ public class Game {
     private Coordinate getRandomCoordinateCanEat() {
         List<Coordinate> removedCoordinates = new ArrayList<Coordinate>();
         for (Coordinate coordinate : this.getCoordinatesWithActualColor()) {
-            int level = 2;
-            boolean remove;
-            do {
-                remove = this.knowCoordinateCanEat(coordinate, level, removedCoordinates);
-                level++;
-            } while (level <= this.getPiece(coordinate).getMaxDistance() && !remove);
+            this.knowCoordinateCanEat(coordinate, this.getPiece(coordinate).getMaxDistance(), removedCoordinates);
         }
         if (removedCoordinates.size() > 0) {
             Random random = new Random();
@@ -111,7 +106,6 @@ public class Game {
 		    randomCoordinateCanEat = this.getRandomCoordinateCanEat();
         }
 		this.board.move(coordinates[pair], coordinates[pair + 1]);
-		this.board.checkIfConvertDraught(coordinates[pair + 1]);
 		if (randomCoordinateCanEat != null) {
 		    this.deleteRandomCoordinateCanEat(pair, randomCoordinateCanEat, coordinates);
         }
@@ -141,7 +135,7 @@ public class Game {
 		for (int j = pair; j > 0; j--)
 			this.board.move(coordinates[j], coordinates[j - 1]);
 		for (Coordinate removedPiece : removedCoordinates)
-			this.board.put(removedPiece, new Pawn(this.getOppositeTurnColor()));
+			this.board.put(removedPiece, new Piece(this.getOppositeTurnColor()));
 	}
 
 	public boolean isBlocked() {
