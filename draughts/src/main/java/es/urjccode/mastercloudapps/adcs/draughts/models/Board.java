@@ -68,14 +68,6 @@ class Board {
         return this.getPiece(coordinate) == null;
     }
 
-    public void checkIfConvertDraught(Coordinate coordinate) {
-        if (this.getPiece(coordinate).isLimit(coordinate)) {
-            Color color = this.getColor(coordinate);
-            this.remove(coordinate);
-            this.put(coordinate, new Draught(color));
-        }
-    }
-
     @Override
     public String toString() {
         String string = "";
