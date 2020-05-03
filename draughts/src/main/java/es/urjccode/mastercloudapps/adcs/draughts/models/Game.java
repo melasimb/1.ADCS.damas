@@ -55,12 +55,7 @@ public class Game {
     private Coordinate getRandomCoordinateCanEat() {
         List<Coordinate> removedCoordinates = new ArrayList<Coordinate>();
         for (Coordinate coordinate : this.getCoordinatesWithActualColor()) {
-            int level = 2;
-            boolean remove;
-            do {
-                remove = this.knowCoordinateCanEat(coordinate, level, removedCoordinates);
-                level++;
-            } while (level <= this.getPiece(coordinate).getMaxDistance() && !remove);
+            this.knowCoordinateCanEat(coordinate, this.getPiece(coordinate).getMaxDistance(), removedCoordinates);
         }
         if (removedCoordinates.size() > 0) {
             Random random = new Random();
