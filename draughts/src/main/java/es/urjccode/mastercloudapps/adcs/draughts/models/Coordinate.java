@@ -47,8 +47,8 @@ public class Coordinate {
     Direction getDirection(Coordinate coordinate) {
         assert coordinate != null;
         Coordinate substract = coordinate.substract(this);
-        for (Direction direction : Direction.values()) 
-            if (direction.isOnDirection(substract)) 
+        for (Direction direction : Direction.values())
+            if (direction.isOnDirection(substract))
                 return direction;
         return null;
     }
@@ -92,14 +92,6 @@ public class Coordinate {
 
     boolean isBlack() {
         return (this.row + this.column) % 2 != 0;
-    }
-
-    public boolean isLast() {
-        return this.row == Coordinate.UPPER_LIMIT;
-    }
-
-    public boolean isFirst() {
-        return this.row == Coordinate.LOWER_LIMIT;
     }
 
     int getRow() {
